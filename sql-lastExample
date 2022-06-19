@@ -1,0 +1,34 @@
+--İsminde en az 4 tane e geçen film sayısı
+
+SELECT COUNT(*) FROM film
+WHERE title ILIKE '%e%e%e%e%'
+
+--Kategori isimleri ve kategori başına düşen film sayısı
+
+SELECT COUNT(*),category.name FROM category
+join film_category on film_category.category_id=category.category_id
+join film on film.film_id=film_category.film_id
+group by category.name;
+
+--en çok film bulunan rating kategorisi
+
+select count(*),rating
+from film
+group by rating
+order by count(*) desc
+limit 1
+
+--film tablosunda k karakteri ile başlayan en uzun ve replacement_cost en az olan 5 film
+
+select title,length, replacement_cost from film
+where title LIKE 'K%'
+order by length desc, replacement_cost
+limit 3
+
+--en çok alışveriş yapan müşteri
+
+select sum(amount), customer.first_name, customer.last_name
+from payment
+join customer on customer.customer_id=payment.customer_id
+group by payment.customer_id,customer.first_name, customer.last_name 
+order by sum(amount) desc
